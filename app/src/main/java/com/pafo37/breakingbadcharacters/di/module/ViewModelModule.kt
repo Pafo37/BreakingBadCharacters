@@ -2,9 +2,11 @@ package com.pafo37.breakingbadcharacters.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
+import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.reflect.KClass
@@ -30,5 +32,10 @@ class ViewModelFactory @Inject constructor(
 abstract class ViewModelModule {
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    internal abstract fun bindsViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CharactersListViewModel::class)
+    internal abstract fun bindsCharactersListViewModel(viewModel: CharactersListViewModel): ViewModel
 }
