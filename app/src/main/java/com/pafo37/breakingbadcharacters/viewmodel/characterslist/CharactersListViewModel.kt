@@ -6,30 +6,31 @@ import androidx.lifecycle.viewModelScope
 import com.pafo37.breakingbadcharacters.api.CharactersRepository
 import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
+import com.pafo37.breakingbadcharacters.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
 class CharactersListViewModel @Inject constructor(private val charactersRepository: CharactersRepository) :
     ViewModel(), OnCharacterClicked {
 
-    val list = mutableListOf<CharactersResponse>()
-
-    val totalCharactersList = MutableLiveData<MutableList<CharactersResponse>>()
-
+    val availableSeasons = mutableListOf<String>()
+    val initializeSpinner = SingleLiveEvent<Unit>()
     val currentCharactersList = mutableListOf<CharactersResponse>()
+    val characterList = MutableLiveData<MutableList<CharactersResponse>>()
 
-    fun test() {
+    private val totalCharacterList = mutableListOf<CharactersResponse>()
 
+    fun getCharacters() {
         viewModelScope.launch {
             try {
                 val response = charactersRepository.getCharacters()
                 if (response.isSuccessful) {
                     response.body()?.let {
                         currentCharactersList.addAll(it)
-                        totalCharactersList.value = currentCharactersList
-                        list.addAll(it)
+                        characterList.value = currentCharactersList
+                        totalCharacterList.addAll(it)
+                        getAvailableSeasons(it)
                     }
                 }
             } catch (exception: Exception) {
@@ -41,5 +42,25 @@ class CharactersListViewModel @Inject constructor(private val charactersReposito
 
     override fun onCharacterClicked() {
 
+    }
+
+    private fun getAvailableSeasons(charactersList: List<CharactersResponse>) {
+        availableSeasons.add("All Seasons")
+        charactersList.map { it.appearance }.flatten().distinct().sorted().forEach {
+            availableSeasons.add("Season $it")
+        }
+        initializeSpinner.call()
+    }
+
+    fun filterCharactersBySeason(season: Int) {
+        if (season == 0) {
+            characterList.value = totalCharacterList
+        } else {
+            val filteredList =
+                currentCharactersList.filter { character -> character.appearance.any { it == season } }
+                    .toMutableList()
+
+            characterList.value = filteredList
+        }
     }
 }

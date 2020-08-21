@@ -2,6 +2,8 @@ package com.pafo37.breakingbadcharacters.ui.characterslist
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,14 +24,46 @@ class CharactersListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbarTitle(getString(R.string.characters_list_title))
+
+        viewModel.getCharacters()
+
         val charactersAdapter = CharactersListAdapter(viewLifecycleOwner, viewModel)
         binding.recyclerViewCharacters.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = charactersAdapter
         }
 
-        viewModel.totalCharactersList.observe(viewLifecycleOwner, Observer {
+        viewModel.characterList.observe(viewLifecycleOwner, Observer {
             charactersAdapter.charactersList = it
+        })
+
+        viewModel.initializeSpinner.observe(viewLifecycleOwner, Observer {
+            val arrayAdapter = ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                viewModel.availableSeasons
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                setNotifyOnChange(true)
+            }
+
+            binding.spinnerFilter.apply {
+                adapter = arrayAdapter
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        viewModel.filterCharactersBySeason(position)
+                    }
+
+                }
+            }
         })
 
         binding.searchViewCharacters.setOnQueryTextListener(object :
@@ -57,6 +91,5 @@ class CharactersListFragment :
 
         })
 
-        viewModel.test()
     }
 }
