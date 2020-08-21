@@ -4,6 +4,7 @@ import android.app.Application
 import com.pafo37.breakingbadcharacters.App
 import com.pafo37.breakingbadcharacters.di.module.ActivityModule
 import com.pafo37.breakingbadcharacters.di.module.FragmentModule
+import com.pafo37.breakingbadcharacters.di.module.NetworkModule
 import com.pafo37.breakingbadcharacters.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -17,6 +18,7 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         ActivityModule::class,
         FragmentModule::class,
+        NetworkModule::class,
         ViewModelModule::class]
 )
 interface AppComponent : AndroidInjector<App> {

@@ -10,10 +10,13 @@ import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListItemViewModel
 
 class CharactersListAdapter(
-    private val pondModelList: List<CharactersResponse>,
     private val lifecycleOwner: LifecycleOwner,
     private val onCharacterClicked: OnCharacterClicked
 ) : RecyclerView.Adapter<CharactersListAdapter.ItemViewHolder>() {
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding =
@@ -22,10 +25,18 @@ class CharactersListAdapter(
         return ItemViewHolder(binding, viewModel)
     }
 
-    override fun getItemCount() = pondModelList.size
+    override fun getItemId(position: Int) = charactersList[position].hashCode().toLong()
+
+    var charactersList: MutableList<CharactersResponse> = arrayListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun getItemCount() = charactersList.size
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(pondModelList[position])
+        holder.onBind(charactersList[position])
     }
 
     inner class ItemViewHolder(
@@ -39,8 +50,8 @@ class CharactersListAdapter(
             binding.lifecycleOwner = lifecycleOwner
         }
 
-        fun onBind(model: CharactersResponse) {
-            viewModel.onBind(model)
+        fun onBind(response: CharactersResponse) {
+            viewModel.onBind(response)
             binding.executePendingBindings()
         }
 
