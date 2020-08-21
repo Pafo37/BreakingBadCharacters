@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BreakingBadCharacters</string>
+
+    <!--  Characters List  -->
+    <string name="characters_list_title">Characters List</string>
+
 </resources>
