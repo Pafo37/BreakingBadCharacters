@@ -51,6 +51,7 @@ class CharactersListFragment :
                 adapter = arrayAdapter
                 onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //not used
                     }
 
                     override fun onItemSelected(
@@ -61,7 +62,6 @@ class CharactersListFragment :
                     ) {
                         viewModel.filterCharactersBySeason(position)
                     }
-
                 }
             }
         })
