@@ -8,7 +8,7 @@ import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 
 class CharactersListItemViewModel(val onCharacterClicked: OnCharacterClicked) : ViewModel() {
 
-    val characters = MutableLiveData<CharactersResponse>()
+    private val characters = MutableLiveData<CharactersResponse>()
 
     val url = characters.map {
         it.img
