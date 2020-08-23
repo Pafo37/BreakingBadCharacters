@@ -88,7 +88,6 @@ class CharactersListFragment :
                 }
                 return true
             }
-
         })
 
     }
