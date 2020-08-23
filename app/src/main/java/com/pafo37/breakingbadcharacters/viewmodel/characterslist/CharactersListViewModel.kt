@@ -6,44 +6,48 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.pafo37.breakingbadcharacters.api.CharactersRepository
 import com.pafo37.breakingbadcharacters.api.ResultOf
-import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
+import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
+import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class CharactersListViewModel @Inject constructor(private val charactersRepository: CharactersRepository) :
-    ViewModel(), OnCharacterClicked {
+class CharactersListViewModel @Inject constructor(
+    private val charactersRepository: CharactersRepository,
+    private val characterConverter: CharacterConverter
+) : ViewModel(), OnCharacterClicked {
 
+    val isLoading = MutableLiveData(false)
     val availableSeasons = mutableListOf<String>()
     val initializeSpinner = SingleLiveEvent<Unit>()
-    val progressBarVisibility = MutableLiveData(false)
-    val currentCharactersList = mutableListOf<CharactersResponse>()
-    val characterList = MutableLiveData<MutableList<CharactersResponse>>()
+    val currentCharactersList = mutableListOf<CharactersListModel>()
+    val characterList = MutableLiveData<MutableList<CharactersListModel>>()
 
-    private val totalCharacterList = mutableListOf<CharactersResponse>()
+    private val totalCharacterList = mutableListOf<CharactersListModel>()
 
-    val viewsVisibility = progressBarVisibility.map {
+    val viewsVisibility = isLoading.map {
         !it
     }
 
     fun getCharacters() {
-        progressBarVisibility.value = true
+        isLoading.value = true
         viewModelScope.launch {
             when (val response = charactersRepository.getCharacters()) {
                 is ResultOf.Success -> {
-                    val charactersList = response.data
+                    val charactersList =
+                        characterConverter.convertToCharactersListModel(response.data)
                     currentCharactersList.addAll(charactersList)
                     characterList.value = currentCharactersList
                     totalCharacterList.addAll(charactersList)
                     getAvailableSeasons(charactersList)
                 }
                 is ResultOf.Error -> {
-                    Timber.d("dsa")
+                    Timber.d(response.message)
                 }
             }
-            progressBarVisibility.value = false
+            isLoading.value = false
         }
     }
 
@@ -51,7 +55,7 @@ class CharactersListViewModel @Inject constructor(private val charactersReposito
 
     }
 
-    private fun getAvailableSeasons(charactersList: List<CharactersResponse>) {
+    private fun getAvailableSeasons(charactersList: List<CharactersListModel>) {
         availableSeasons.add("All Seasons")
         charactersList.map { it.appearance }.flatten().distinct().sorted().forEach {
             availableSeasons.add("Season $it")

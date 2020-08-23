@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pafo37.breakingbadcharacters.R
 import com.pafo37.breakingbadcharacters.adapter.CharactersListAdapter
-import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
 import com.pafo37.breakingbadcharacters.databinding.FragmentCharactersListBinding
+import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.base.BaseFragment
 import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListViewModel
 
@@ -73,7 +73,7 @@ class CharactersListFragment :
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val searchList = arrayListOf<CharactersResponse>()
+                val searchList = arrayListOf<CharactersListModel>()
                 if (!newText.isNullOrEmpty()) {
                     viewModel.currentCharactersList.map {
                         if (it.name.contains(newText, ignoreCase = true)) {

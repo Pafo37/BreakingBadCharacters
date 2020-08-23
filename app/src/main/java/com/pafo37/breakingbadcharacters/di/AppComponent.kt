@@ -2,10 +2,7 @@ package com.pafo37.breakingbadcharacters.di
 
 import android.app.Application
 import com.pafo37.breakingbadcharacters.App
-import com.pafo37.breakingbadcharacters.di.module.ActivityModule
-import com.pafo37.breakingbadcharacters.di.module.FragmentModule
-import com.pafo37.breakingbadcharacters.di.module.NetworkModule
-import com.pafo37.breakingbadcharacters.di.module.ViewModelModule
+import com.pafo37.breakingbadcharacters.di.module.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -16,6 +13,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
+        ApplicationModule::class,
         ActivityModule::class,
         FragmentModule::class,
         NetworkModule::class,

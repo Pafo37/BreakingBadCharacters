@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
 import com.pafo37.breakingbadcharacters.databinding.ItemCharactersListBinding
+import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListItemViewModel
 
@@ -27,7 +27,7 @@ class CharactersListAdapter(
 
     override fun getItemId(position: Int) = charactersList[position].hashCode().toLong()
 
-    var charactersList: MutableList<CharactersResponse> = arrayListOf()
+    var charactersList: MutableList<CharactersListModel> = arrayListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -50,8 +50,8 @@ class CharactersListAdapter(
             binding.lifecycleOwner = lifecycleOwner
         }
 
-        fun onBind(response: CharactersResponse) {
-            viewModel.onBind(response)
+        fun onBind(model: CharactersListModel) {
+            viewModel.onBind(model)
             binding.executePendingBindings()
         }
 

@@ -1,9 +1,7 @@
-package com.pafo37.breakingbadcharacters.api.response
+package com.pafo37.breakingbadcharacters.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
-data class CharactersResponse(
-    @JsonProperty("char_id") var id: Int,
+data class CharactersListModel (
+    var id: Int,
     var name: String,
     var birthday: String,
     var occupation: List<String>,
