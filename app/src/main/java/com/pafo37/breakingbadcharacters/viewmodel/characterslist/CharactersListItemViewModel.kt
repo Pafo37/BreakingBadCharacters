@@ -6,7 +6,7 @@ import androidx.lifecycle.map
 import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 
-class CharactersListItemViewModel(val onCharacterClicked: OnCharacterClicked) : ViewModel() {
+class CharactersListItemViewModel(private val onCharacterClicked: OnCharacterClicked) : ViewModel() {
 
     private val characters = MutableLiveData<CharactersListModel>()
 
@@ -19,5 +19,11 @@ class CharactersListItemViewModel(val onCharacterClicked: OnCharacterClicked) : 
 
     fun onBind(model: CharactersListModel) {
         characters.value = model
+    }
+
+    fun onCharacterClicked() {
+        characters.value?.let {
+            onCharacterClicked.onCharacterClicked(it)
+        }
     }
 }

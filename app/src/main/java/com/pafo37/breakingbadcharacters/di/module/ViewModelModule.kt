@@ -2,7 +2,7 @@ package com.pafo37.breakingbadcharacters.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.pafo37.breakingbadcharacters.viewmodel.CharacterDetailsViewModel
+import com.pafo37.breakingbadcharacters.viewmodel.characterdetails.CharacterDetailsViewModel
 import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListViewModel
 import dagger.Binds
 import dagger.MapKey

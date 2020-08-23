@@ -24,6 +24,7 @@ class CharactersListViewModel @Inject constructor(
     val initializeSpinner = SingleLiveEvent<Unit>()
     val currentCharactersList = mutableListOf<CharactersListModel>()
     val characterList = MutableLiveData<MutableList<CharactersListModel>>()
+    val navigateToCharacterDetails = SingleLiveEvent<CharactersListModel>()
 
     private val totalCharacterList = mutableListOf<CharactersListModel>()
 
@@ -51,8 +52,8 @@ class CharactersListViewModel @Inject constructor(
         }
     }
 
-    override fun onCharacterClicked() {
-
+    override fun onCharacterClicked(model: CharactersListModel) {
+        navigateToCharacterDetails.value = model
     }
 
     private fun getAvailableSeasons(charactersList: List<CharactersListModel>) {

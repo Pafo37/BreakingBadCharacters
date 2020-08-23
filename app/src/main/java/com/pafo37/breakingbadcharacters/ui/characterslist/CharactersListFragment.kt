@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pafo37.breakingbadcharacters.R
 import com.pafo37.breakingbadcharacters.adapter.CharactersListAdapter
@@ -35,6 +36,16 @@ class CharactersListFragment :
 
         viewModel.characterList.observe(viewLifecycleOwner, Observer {
             charactersAdapter.charactersList = it
+        })
+
+        viewModel.navigateToCharacterDetails.observe(viewLifecycleOwner, Observer {
+            if (findNavController().currentDestination?.id == R.id.characterListFragment) {
+                findNavController().navigate(
+                    CharactersListFragmentDirections.actionCharacterListFragmentToCharacterDetailsFragment(
+                        it
+                    )
+                )
+            }
         })
 
         viewModel.initializeSpinner.observe(viewLifecycleOwner, Observer {
