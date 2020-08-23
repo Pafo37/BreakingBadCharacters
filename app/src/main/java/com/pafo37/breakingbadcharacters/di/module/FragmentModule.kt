@@ -1,5 +1,6 @@
 package com.pafo37.breakingbadcharacters.di.module
 
+import com.pafo37.breakingbadcharacters.ui.characterdetails.CharacterDetailsFragment
 import com.pafo37.breakingbadcharacters.ui.characterslist.CharactersListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -9,4 +10,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributesCharactersListFragment(): CharactersListFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesCharacterDetailsFragment(): CharacterDetailsFragment
 }
