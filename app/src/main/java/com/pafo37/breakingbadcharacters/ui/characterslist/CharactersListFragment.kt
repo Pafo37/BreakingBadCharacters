@@ -26,7 +26,9 @@ class CharactersListFragment :
         super.onViewCreated(view, savedInstanceState)
         setToolbarTitle(getString(R.string.characters_list_title))
 
-        viewModel.getCharacters()
+        if (viewModel.currentCharactersList.isEmpty()) {
+            viewModel.getCharacters()
+        }
 
         val charactersAdapter = CharactersListAdapter(viewLifecycleOwner, viewModel)
         binding.recyclerViewCharacters.apply {
