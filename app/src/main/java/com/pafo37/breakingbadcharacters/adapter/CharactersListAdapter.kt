@@ -42,8 +42,7 @@ class CharactersListAdapter(
     inner class ItemViewHolder(
         private val binding: ItemCharactersListBinding,
         private val viewModel: CharactersListItemViewModel
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.viewModel = viewModel

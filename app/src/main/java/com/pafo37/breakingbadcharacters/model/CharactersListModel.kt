@@ -1,6 +1,6 @@
 package com.pafo37.breakingbadcharacters.model
 
-data class CharactersListModel (
+data class CharactersListModel(
     var id: Int,
     var name: String,
     var birthday: String,

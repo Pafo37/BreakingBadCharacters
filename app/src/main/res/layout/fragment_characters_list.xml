@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Filter by Season:"
+            android:text="@string/characters_list_filter_by_season"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:textStyle="bold"

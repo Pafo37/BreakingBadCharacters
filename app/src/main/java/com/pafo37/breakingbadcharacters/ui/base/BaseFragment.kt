@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 import kotlin.reflect.KClass
-
 
 abstract class BaseFragment<B : ViewDataBinding, VM : ViewModel> : DaggerFragment() {
 

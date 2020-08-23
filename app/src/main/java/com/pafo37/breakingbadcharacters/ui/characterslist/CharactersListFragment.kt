@@ -29,7 +29,7 @@ class CharactersListFragment :
 
         val charactersAdapter = CharactersListAdapter(viewLifecycleOwner, viewModel)
         binding.recyclerViewCharacters.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), GRID_LAYOUT_SPAN_COUNT)
             adapter = charactersAdapter
         }
 
@@ -91,5 +91,9 @@ class CharactersListFragment :
 
         })
 
+    }
+
+    companion object {
+        const val GRID_LAYOUT_SPAN_COUNT = 2
     }
 }

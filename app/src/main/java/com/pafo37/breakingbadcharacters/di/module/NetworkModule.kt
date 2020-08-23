@@ -1,9 +1,9 @@
 package com.pafo37.breakingbadcharacters.di.module
 
-import android.app.Application
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.pafo37.breakingbadcharacters.BuildConfig
 import com.pafo37.breakingbadcharacters.api.CharactersApi
 import dagger.Module
 import dagger.Provides
@@ -40,7 +40,7 @@ class NetworkModule {
         jacksonConverterFactory: JacksonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(" https://breakingbadapi.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(jacksonConverterFactory)
             .build()
     }

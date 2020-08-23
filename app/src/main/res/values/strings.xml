@@ -3,5 +3,6 @@
 
     <!--  Characters List  -->
     <string name="characters_list_title">Characters List</string>
+    <string name="characters_list_filter_by_season">Filter by Season:</string>
 
 </resources>
