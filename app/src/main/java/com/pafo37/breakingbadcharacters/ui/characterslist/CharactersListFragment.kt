@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pafo37.breakingbadcharacters.R
 import com.pafo37.breakingbadcharacters.adapter.CharactersListAdapter
@@ -21,11 +22,17 @@ class CharactersListFragment :
 
     override val viewModelClass = CharactersListViewModel::class
 
+    private lateinit var arrayAdapter: ArrayAdapter<String>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbarTitle(getString(R.string.characters_list_title))
 
-        viewModel.getCharacters()
+        if (viewModel.currentCharactersList.isEmpty()) {
+            viewModel.getCharacters()
+        } else {
+            updateSpinner(viewModel.getAvailableSeasons(viewModel.currentCharactersList))
+        }
 
         val charactersAdapter = CharactersListAdapter(viewLifecycleOwner, viewModel)
         binding.recyclerViewCharacters.apply {
@@ -37,33 +44,28 @@ class CharactersListFragment :
             charactersAdapter.charactersList = it
         })
 
+        viewModel.navigateToCharacterDetails.observe(viewLifecycleOwner, Observer {
+            if (findNavController().currentDestination?.id == R.id.characterListFragment) {
+                findNavController().navigate(
+                    CharactersListFragmentDirections.actionCharacterListFragmentToCharacterDetailsFragment(
+                        it
+                    )
+                )
+            }
+        })
+
         viewModel.initializeSpinner.observe(viewLifecycleOwner, Observer {
-            val arrayAdapter = ArrayAdapter<String>(
+            arrayAdapter = ArrayAdapter<String>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
-                viewModel.availableSeasons
+                it
             ).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 setNotifyOnChange(true)
             }
 
-            binding.spinnerFilter.apply {
-                adapter = arrayAdapter
-                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //not used
-                    }
+            setSpinnerAdapter()
 
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        viewModel.filterCharactersBySeason(position)
-                    }
-                }
-            }
         })
 
         binding.searchViewCharacters.setOnQueryTextListener(object :
@@ -90,6 +92,32 @@ class CharactersListFragment :
             }
         })
 
+    }
+
+    private fun updateSpinner(availableSeasons: List<String>) {
+        arrayAdapter.clear()
+        arrayAdapter.addAll(availableSeasons)
+        setSpinnerAdapter()
+    }
+
+    private fun setSpinnerAdapter() {
+        binding.spinnerFilter.apply {
+            adapter = arrayAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //not used
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.filterCharactersBySeason(position)
+                }
+            }
+        }
     }
 
     companion object {

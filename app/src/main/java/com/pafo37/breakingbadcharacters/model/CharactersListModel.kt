@@ -1,5 +1,9 @@
 package com.pafo37.breakingbadcharacters.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class CharactersListModel(
     var id: Int,
     var name: String,
@@ -12,4 +16,4 @@ data class CharactersListModel(
     var portrayed: String,
     var category: String,
     var betterCallSaulAppearance: List<Int>?
-)
+) : Parcelable

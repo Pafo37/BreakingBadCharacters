@@ -20,10 +20,10 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel(), OnCharacterClicked {
 
     val isLoading = MutableLiveData(false)
-    val availableSeasons = mutableListOf<String>()
-    val initializeSpinner = SingleLiveEvent<Unit>()
+    val initializeSpinner = SingleLiveEvent<List<String>>()
     val currentCharactersList = mutableListOf<CharactersListModel>()
     val characterList = MutableLiveData<MutableList<CharactersListModel>>()
+    val navigateToCharacterDetails = SingleLiveEvent<CharactersListModel>()
 
     private val totalCharacterList = mutableListOf<CharactersListModel>()
 
@@ -41,7 +41,7 @@ class CharactersListViewModel @Inject constructor(
                     currentCharactersList.addAll(charactersList)
                     characterList.value = currentCharactersList
                     totalCharacterList.addAll(charactersList)
-                    getAvailableSeasons(charactersList)
+                    initializeSpinner.value = getAvailableSeasons(charactersList)
                 }
                 is ResultOf.Error -> {
                     Timber.d(response.message)
@@ -51,16 +51,17 @@ class CharactersListViewModel @Inject constructor(
         }
     }
 
-    override fun onCharacterClicked() {
-
+    override fun onCharacterClicked(model: CharactersListModel) {
+        navigateToCharacterDetails.value = model
     }
 
-    private fun getAvailableSeasons(charactersList: List<CharactersListModel>) {
+    fun getAvailableSeasons(charactersList: List<CharactersListModel>): List<String> {
+        val availableSeasons = arrayListOf<String>()
         availableSeasons.add("All Seasons")
         charactersList.map { it.appearance }.flatten().distinct().sorted().forEach {
             availableSeasons.add("Season $it")
         }
-        initializeSpinner.call()
+        return availableSeasons
     }
 
     fun filterCharactersBySeason(season: Int) {

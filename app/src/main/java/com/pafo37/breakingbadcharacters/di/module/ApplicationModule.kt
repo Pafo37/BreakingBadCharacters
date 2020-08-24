@@ -11,4 +11,5 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideCharacterConverter(): CharacterConverter = CharacterConverter()
+
 }

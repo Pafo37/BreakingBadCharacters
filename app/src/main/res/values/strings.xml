@@ -5,4 +5,10 @@
     <string name="characters_list_title">Characters List</string>
     <string name="characters_list_filter_by_season">Filter by Season:</string>
 
+    <!--  Character Details  -->
+    <string name="character_details_occupation">Occupation:</string>
+    <string name="character_details_status">Status:</string>
+    <string name="character_details_nickname">Nickname:</string>
+    <string name="character_details_season_appearance">Season appearance:</string>
+
 </resources>

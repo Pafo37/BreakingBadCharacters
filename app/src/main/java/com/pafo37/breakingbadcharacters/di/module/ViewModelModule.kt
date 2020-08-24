@@ -2,6 +2,7 @@ package com.pafo37.breakingbadcharacters.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.pafo37.breakingbadcharacters.viewmodel.characterdetails.CharacterDetailsViewModel
 import com.pafo37.breakingbadcharacters.viewmodel.characterslist.CharactersListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -38,4 +39,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CharactersListViewModel::class)
     internal abstract fun bindsCharactersListViewModel(viewModel: CharactersListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CharacterDetailsViewModel::class)
+    internal abstract fun bindsCharacterDetailsViewModel(viewModel: CharacterDetailsViewModel): ViewModel
 }
