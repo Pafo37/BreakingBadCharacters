@@ -10,7 +10,7 @@ class CharactersListItemViewModel(private val onCharacterClicked: OnCharacterCli
 
     private val characters = MutableLiveData<CharactersListModel>()
 
-    val url = characters.map {
+    val image = characters.map {
         it.img
     }
     val name = characters.map {

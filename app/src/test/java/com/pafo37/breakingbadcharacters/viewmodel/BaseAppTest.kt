@@ -1,7 +1,7 @@
 package com.pafo37.breakingbadcharacters.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import com.pafo37.breakingbadcharacters.utils.MainCoroutineRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TestRule
@@ -15,6 +15,9 @@ open class BaseAppTest {
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Before
     open fun setUp() {

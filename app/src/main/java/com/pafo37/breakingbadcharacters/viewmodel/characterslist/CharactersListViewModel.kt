@@ -10,13 +10,15 @@ import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.SingleLiveEvent
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 class CharactersListViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository,
-    private val characterConverter: CharacterConverter
+    private val characterConverter: CharacterConverter,
+    private val coroutineDispatcher: CoroutineDispatcher
 ) : ViewModel(), OnCharacterClicked {
 
     val isLoading = MutableLiveData(false)
@@ -33,7 +35,7 @@ class CharactersListViewModel @Inject constructor(
 
     fun getCharacters() {
         isLoading.value = true
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineDispatcher) {
             when (val response = charactersRepository.getCharacters()) {
                 is ResultOf.Success -> {
                     val charactersList =

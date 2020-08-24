@@ -32,7 +32,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:loadUrl="@{viewModel.url}" />
+                app:loadUrl="@{viewModel.image}" />
 
             <TextView
                 android:id="@+id/txt_character_name"
