@@ -1,6 +1,7 @@
 package com.pafo37.breakingbadcharacters.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TestRule

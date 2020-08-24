@@ -22,12 +22,16 @@ class CharactersListFragment :
 
     override val viewModelClass = CharactersListViewModel::class
 
+    private lateinit var arrayAdapter: ArrayAdapter<String>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbarTitle(getString(R.string.characters_list_title))
 
         if (viewModel.currentCharactersList.isEmpty()) {
             viewModel.getCharacters()
+        } else {
+            updateSpinner(viewModel.getAvailableSeasons(viewModel.currentCharactersList))
         }
 
         val charactersAdapter = CharactersListAdapter(viewLifecycleOwner, viewModel)
@@ -51,32 +55,17 @@ class CharactersListFragment :
         })
 
         viewModel.initializeSpinner.observe(viewLifecycleOwner, Observer {
-            val arrayAdapter = ArrayAdapter<String>(
+            arrayAdapter = ArrayAdapter<String>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
-                viewModel.availableSeasons
+                it
             ).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 setNotifyOnChange(true)
             }
 
-            binding.spinnerFilter.apply {
-                adapter = arrayAdapter
-                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //not used
-                    }
+            setSpinnerAdapter()
 
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        viewModel.filterCharactersBySeason(position)
-                    }
-                }
-            }
         })
 
         binding.searchViewCharacters.setOnQueryTextListener(object :
@@ -103,6 +92,33 @@ class CharactersListFragment :
             }
         })
 
+    }
+
+    private fun updateSpinner(availableSeasons: List<String>) {
+        arrayAdapter.clear()
+        arrayAdapter.addAll(availableSeasons)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        setSpinnerAdapter()
+    }
+
+    private fun setSpinnerAdapter() {
+        binding.spinnerFilter.apply {
+            adapter = arrayAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //not used
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.filterCharactersBySeason(position)
+                }
+            }
+        }
     }
 
     companion object {
