@@ -14,7 +14,4 @@ class ApplicationModule {
     @Singleton
     fun provideCharacterConverter(): CharacterConverter = CharacterConverter()
 
-    @Provides
-    @Singleton
-    fun provideCoroutineDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }

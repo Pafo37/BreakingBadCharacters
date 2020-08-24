@@ -17,8 +17,7 @@ import javax.inject.Inject
 
 class CharactersListViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository,
-    private val characterConverter: CharacterConverter,
-    private val coroutineDispatcher: CoroutineDispatcher
+    private val characterConverter: CharacterConverter
 ) : ViewModel(), OnCharacterClicked {
 
     val isLoading = MutableLiveData(false)
@@ -35,7 +34,7 @@ class CharactersListViewModel @Inject constructor(
 
     fun getCharacters() {
         isLoading.value = true
-        viewModelScope.launch(coroutineDispatcher) {
+        viewModelScope.launch {
             when (val response = charactersRepository.getCharacters()) {
                 is ResultOf.Success -> {
                     val charactersList =

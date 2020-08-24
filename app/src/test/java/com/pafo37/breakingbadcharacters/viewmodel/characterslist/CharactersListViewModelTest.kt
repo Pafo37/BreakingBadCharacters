@@ -9,7 +9,7 @@ import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.withObserver
 import com.pafo37.breakingbadcharacters.viewmodel.BaseAppTest
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.mockito.Mock
 
@@ -26,15 +26,13 @@ class CharactersListViewModelTest : BaseAppTest() {
     override fun setUp() {
         viewModel = CharactersListViewModel(
             charactersRepository,
-            characterConverter,
-            coroutineRule.dispatcher
+            characterConverter
         )
     }
 
-
     @Test
     fun testGetCharacters() {
-        coroutineRule.runBlockingTest {
+        runBlocking {
             whenever(charactersRepository.getCharacters()).thenReturn(
                 ResultOf.Success(
                     listOf(
@@ -74,7 +72,7 @@ class CharactersListViewModelTest : BaseAppTest() {
 
     @Test
     fun testFilterCharactersBySeason() {
-        coroutineRule.runBlockingTest {
+        runBlocking {
             whenever(charactersRepository.getCharacters()).thenReturn(
                 ResultOf.Success(
                     listOf(
@@ -103,7 +101,7 @@ class CharactersListViewModelTest : BaseAppTest() {
 
     @Test
     fun testFilterCharactersByAllSeasons() {
-        coroutineRule.runBlockingTest {
+        runBlocking {
             whenever(charactersRepository.getCharacters()).thenReturn(
                 ResultOf.Success(
                     listOf(
