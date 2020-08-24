@@ -97,7 +97,6 @@ class CharactersListFragment :
     private fun updateSpinner(availableSeasons: List<String>) {
         arrayAdapter.clear()
         arrayAdapter.addAll(availableSeasons)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         setSpinnerAdapter()
     }
 

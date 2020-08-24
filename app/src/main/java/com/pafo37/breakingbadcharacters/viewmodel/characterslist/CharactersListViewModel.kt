@@ -10,7 +10,6 @@ import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
 import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.SingleLiveEvent
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
