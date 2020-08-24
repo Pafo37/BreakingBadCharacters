@@ -64,6 +64,7 @@ class CharactersListViewModel @Inject constructor(
         initializeSpinner.call()
     }
 
+    //TODO:Fix filtering when navigating back
     fun filterCharactersBySeason(season: Int) {
         if (season == 0) {
             characterList.value = totalCharacterList

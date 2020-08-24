@@ -31,8 +31,8 @@ class CharacterDetailsViewModel @Inject constructor() : ViewModel() {
     }
 
     val seasonAppearance = characterDetails.map {
-        it.appearance.joinToString(", ", "", "", -1, "") {
+        it.appearance.joinToString(", ", transform = {
             "Season $it"
-        }
+        })
     }
 }
