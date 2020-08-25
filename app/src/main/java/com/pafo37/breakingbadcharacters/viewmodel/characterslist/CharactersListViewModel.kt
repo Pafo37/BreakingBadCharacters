@@ -6,17 +6,17 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.pafo37.breakingbadcharacters.api.CharactersRepository
 import com.pafo37.breakingbadcharacters.api.ResultOf
+import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
 import com.pafo37.breakingbadcharacters.model.CharactersListModel
 import com.pafo37.breakingbadcharacters.ui.characterslist.OnCharacterClicked
-import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class CharactersListViewModel @Inject constructor(
-    private val charactersRepository: CharactersRepository,
-    private val characterConverter: CharacterConverter
+    private val charactersRepository: CharactersRepository
 ) : ViewModel(), OnCharacterClicked {
 
     val isLoading = MutableLiveData(false)
@@ -37,7 +37,7 @@ class CharactersListViewModel @Inject constructor(
             when (val response = charactersRepository.getCharacters()) {
                 is ResultOf.Success -> {
                     val charactersList =
-                        characterConverter.convertToCharactersListModel(response.data)
+                        convertToCharactersListModel(response.data)
                     currentCharactersList.addAll(charactersList)
                     characterList.value = currentCharactersList
                     totalCharacterList.addAll(charactersList)
@@ -73,6 +73,34 @@ class CharactersListViewModel @Inject constructor(
                     .toMutableList()
 
             characterList.value = filteredList
+        }
+    }
+
+    fun filterSearchList(query: String): ArrayList<CharactersListModel> {
+        val searchList = arrayListOf<CharactersListModel>()
+        currentCharactersList.map {
+            if (it.name.contains(query, ignoreCase = true)) {
+                searchList.add(it)
+            }
+        }
+        return searchList
+    }
+
+    private fun convertToCharactersListModel(charactersResponseList: List<CharactersResponse>): List<CharactersListModel> {
+        return charactersResponseList.map { charactersResponse ->
+            CharactersListModel(
+                id = charactersResponse.id,
+                name = charactersResponse.name,
+                birthday = charactersResponse.birthday,
+                occupation = charactersResponse.occupation,
+                img = charactersResponse.img,
+                status = charactersResponse.status,
+                nickname = charactersResponse.nickname,
+                appearance = charactersResponse.appearance,
+                portrayed = charactersResponse.portrayed,
+                category = charactersResponse.category,
+                betterCallSaulAppearance = charactersResponse.betterCallSaulAppearance
+            )
         }
     }
 }
