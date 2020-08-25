@@ -6,9 +6,9 @@ import com.pafo37.breakingbadcharacters.api.CharactersRepository
 import com.pafo37.breakingbadcharacters.api.ResultOf
 import com.pafo37.breakingbadcharacters.api.response.CharactersResponse
 import com.pafo37.breakingbadcharacters.model.CharactersListModel
-import com.pafo37.breakingbadcharacters.utils.CharacterConverter
 import com.pafo37.breakingbadcharacters.utils.withObserver
 import com.pafo37.breakingbadcharacters.viewmodel.BaseAppTest
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.mockito.Mock
@@ -18,15 +18,12 @@ class CharactersListViewModelTest : BaseAppTest() {
     @Mock
     lateinit var charactersRepository: CharactersRepository
 
-    @Mock
-    lateinit var characterConverter: CharacterConverter
 
     private lateinit var viewModel: CharactersListViewModel
 
     override fun setUp() {
         viewModel = CharactersListViewModel(
-            charactersRepository,
-            characterConverter
+            charactersRepository
         )
     }
 
@@ -40,9 +37,7 @@ class CharactersListViewModelTest : BaseAppTest() {
                     )
                 )
             )
-            whenever(characterConverter.convertToCharactersListModel(listOf(characterListResponse))).thenReturn(
-                listOf(characterListModel)
-            )
+
             viewModel.getCharacters()
             viewModel.characterList.withObserver {
                 verify(it).onChanged(mutableListOf(characterListModel))
@@ -81,16 +76,7 @@ class CharactersListViewModelTest : BaseAppTest() {
                     )
                 )
             )
-            whenever(
-                characterConverter.convertToCharactersListModel(
-                    listOf(
-                        characterListResponse,
-                        characterListResponseSeason5Appearance
-                    )
-                )
-            ).thenReturn(
-                listOf(characterListModel, characterListModelSeason5Appearance)
-            )
+
             viewModel.getCharacters()
             viewModel.filterCharactersBySeason(5)
             viewModel.characterList.withObserver {
@@ -110,16 +96,6 @@ class CharactersListViewModelTest : BaseAppTest() {
                     )
                 )
             )
-            whenever(
-                characterConverter.convertToCharactersListModel(
-                    listOf(
-                        characterListResponse,
-                        characterListResponseSeason5Appearance
-                    )
-                )
-            ).thenReturn(
-                listOf(characterListModel, characterListModelSeason5Appearance)
-            )
             viewModel.getCharacters()
             viewModel.filterCharactersBySeason(0)
             viewModel.characterList.withObserver {
@@ -133,6 +109,22 @@ class CharactersListViewModelTest : BaseAppTest() {
         }
     }
 
+    @Test
+    fun testSearchFilter() {
+        runBlocking {
+            whenever(charactersRepository.getCharacters()).thenReturn(
+                ResultOf.Success(
+                    listOf(
+                        characterListResponse
+                    )
+                )
+            )
+
+            viewModel.getCharacters()
+            assertEquals(listOf(characterListModel), viewModel.filterSearchList("W"))
+            assertEquals(listOf<CharactersListModel>(), viewModel.filterSearchList("J"))
+        }
+    }
 
     private val characterListModel =
         CharactersListModel(

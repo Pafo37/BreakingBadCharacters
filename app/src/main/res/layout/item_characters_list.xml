@@ -13,10 +13,10 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/margin_between_elements_half"
         android:onClick="@{()->viewModel.onCharacterClicked()}"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        app:cardCornerRadius="@dimen/margin_between_elements_default"
+        app:cardElevation="@dimen/margin_between_elements_half">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,8 +39,8 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="@dimen/margin_between_elements_half"
+                android:layout_marginBottom="@dimen/margin_between_elements_half"
                 android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:text="@{viewModel.name}"
